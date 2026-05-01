@@ -5,12 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ShadySam — DesktopDecimator</title>
 
-
 <style>
   :root{
     --bg: #020a05;
     --phosphor: #66ff8a;
     --phosphor2:#1bff5a;
+  }
+
+  html, body {
+    height: 100%;
   }
 
   body {
@@ -99,6 +102,58 @@
     content: "> ";
     color: #66ff8a;
   }
+
+  /* ===========================
+     NEW: Typed-title caret
+     =========================== */
+  .typed-title.typing::after {
+    content: "█";
+    margin-left: 6px;
+    color: rgba(102,255,138,0.85);
+    text-shadow: 0 0 10px rgba(80,255,160,0.35);
+    animation: caretBlink 0.85s steps(1) infinite;
+  }
+
+  @keyframes caretBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  /* ===========================
+     NEW: Subtle CRT glitch
+     =========================== */
+  @keyframes crtJitter {
+    0%   { transform: translate(0,0); filter: none; }
+    12%  { transform: translate(-1px, 0px); filter: drop-shadow(1px 0 0 rgba(0,255,140,0.18)) drop-shadow(-1px 0 0 rgba(255,0,90,0.10)); }
+    28%  { transform: translate(1px, -1px); filter: drop-shadow(1px 0 0 rgba(0,255,140,0.14)) drop-shadow(-1px 0 0 rgba(255,0,90,0.08)); }
+    46%  { transform: translate(-1px, 1px); }
+    65%  { transform: translate(1px, 0px); }
+    100% { transform: translate(0,0); filter: none; }
+  }
+
+  /* tiny brightness pulse to mimic phosphor flicker */
+  @keyframes crtFlickerPulse {
+    0%   { opacity: 1; }
+    35%  { opacity: 0.965; }
+    70%  { opacity: 0.99; }
+    100% { opacity: 1; }
+  }
+
+  /* scanline drift nudge during glitch */
+  .crt.glitch::before {
+    background-position: 0 2px;
+    opacity: 0.68;
+  }
+
+  .crt.glitch {
+    animation: crtJitter 260ms steps(2) 1, crtFlickerPulse 260ms linear 1;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .typed-title.typing::after { animation: none; }
+    .crt.glitch { animation: none; }
+  }
 </style>
 </head>
 
@@ -110,7 +165,7 @@
 
     <!-- DesktopDecimator -->
     <div class="tool">
-      <h2>DesktopDecimator</h2>
+      <h2 class="typed-title">DesktopDecimator</h2>
       <p class="prompt">
         A full native‑resolution remake of the classic desktop destruction game,
         rebuilt with real geometric cutting, physics & particles.
@@ -121,7 +176,7 @@
 
     <!-- HID Injection Payloads -->
     <div class="tool">
-      <h2>HID Injection Payloads</h2>
+      <h2 class="typed-title">HID Injection Payloads</h2>
       <p class="prompt">
         A collection of USB HID payloads for automated input emulation, testing, and rapid deployment scenarios.
       </p>
@@ -131,8 +186,8 @@
 
     <!-- LogiCost -->
     <div class="tool">
-      <h2>LogiCost</h2>
-      <p class="prompt"> 
+      <h2 class="typed-title">LogiCost</h2>
+      <p class="prompt">
         LogiCost converts volume assumptions into activity-based cost models across warehousing & handling
       </p>
 
@@ -155,5 +210,89 @@
     </div>
 
   </div>
+
+<script>
+  (function () {
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ===========================
+    // Typed titles (sequential)
+    // ===========================
+    const titles = Array.from(document.querySelectorAll(".typed-title"));
+    const originalTexts = titles.map(el => el.textContent);
+
+    function typeInto(el, text, speed, done) {
+      el.textContent = "";
+      el.classList.add("typing");
+      let i = 0;
+
+      function tick() {
+        el.textContent += text.charAt(i);
+        i++;
+        if (i < text.length) {
+          setTimeout(tick, speed);
+        } else {
+          el.classList.remove("typing");
+          done && done();
+        }
+      }
+      tick();
+    }
+
+    function typeAllSequentially() {
+      let idx = 0;
+      const speed = 35;           // per-character
+      const gap = 160;            // pause between titles
+
+      function next() {
+        if (idx >= titles.length) return;
+        typeInto(titles[idx], originalTexts[idx], speed, () => {
+          idx++;
+          setTimeout(next, gap);
+        });
+      }
+      next();
+    }
+
+    if (!reduceMotion) {
+      // Start typing shortly after paint
+      window.addEventListener("DOMContentLoaded", () => {
+        // Ensure we always have stored texts even if DOM changes
+        typeAllSequentially();
+      });
+    }
+
+    // If reduced motion: keep titles as-is (no typing)
+    if (reduceMotion) {
+      // ensure no typing class
+      titles.forEach(el => el.classList.remove("typing"));
+    }
+
+    // ===========================
+    // Subtle CRT glitch every 60–120s
+    // ===========================
+    const crt = document.querySelector(".crt");
+
+    function triggerGlitch() {
+      if (!crt) return;
+      crt.classList.add("glitch");
+      // short duration (subtle)
+      setTimeout(() => crt.classList.remove("glitch"), 260);
+    }
+
+    function scheduleGlitch() {
+      if (reduceMotion) return;
+      // random between 60s and 120s
+      const delay = 60000 + Math.random() * 60000;
+      setTimeout(() => {
+        triggerGlitch();
+        scheduleGlitch();
+      }, delay);
+    }
+
+    scheduleGlitch();
+  })();
+</script>
+
 </body>
 </html>

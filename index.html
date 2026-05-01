@@ -4,15 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>ShadySam — DesktopDecimator</title>
+<title>CompileCurious</title>
 
-<!-- Link Preview (Open Graph) -->
-<meta property="og:title" content="ShadySam">
+<!-- ✅ Open Graph (fixes preview) -->
+<meta property="og:title" content="CompileCurious">
 <meta property="og:description" content="Digital experiments & tools.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://shadysam.github.io/">
+<meta property="og:url" content="https://compilecurious.github.io/">
 
-<!-- Optional: makes some platforms show a nicer snippet -->
 <meta name="description" content="Digital experiments & tools.">
 
 <style>
@@ -107,13 +106,11 @@
     color: #66ff8a;
   }
 
-  /* ===========================
-     AS/400-style blinking underscore cursor (FIXED)
-     =========================== */
+  /* Cursor */
   .as400-cursor{
     display: inline-block;
     margin-left: 6px;
-    width: 0.7ch;              /* prevents layout wobble */
+    width: 0.7ch;
     color: var(--phosphor2);
     text-shadow:
       0 0 12px rgba(51,255,102,0.55),
@@ -122,199 +119,77 @@
   }
 
   @keyframes as400Blink {
-    0%, 45%   { opacity: 1; }
-    46%, 60%  { opacity: 0; }
+    0%, 45% { opacity: 1; }
+    46%, 60% { opacity: 0; }
     61%, 100% { opacity: 1; }
   }
 
-  /* ===========================
-     Typed-title caret
-     =========================== */
+  /* Typed caret */
   .typed-title.typing::after {
     content: "█";
     margin-left: 6px;
-    color: rgba(102,255,138,0.85);
-    text-shadow: 0 0 10px rgba(80,255,160,0.35);
     animation: caretBlink 0.85s steps(1) infinite;
   }
 
   @keyframes caretBlink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+    0%,49%{opacity:1}
+    50%,100%{opacity:0}
   }
 
-  /* ===========================
-     Less annoying: brief description "ASCII scramble"
-     =========================== */
   .desc-glitch {
-    text-shadow:
-      0 0 18px rgba(80,255,160,0.65),
-      0 0 6px rgba(80,255,160,0.35);
+    text-shadow: 0 0 18px rgba(80,255,160,0.65);
   }
 
-  /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .typed-title.typing::after { animation: none; }
-    .as400-cursor { animation: none; opacity: 1; }
+    .as400-cursor { animation: none; }
   }
 </style>
 </head>
 
 <body>
-  <div class="crt">
+<div class="crt">
 
-    <h1>ShadySam<span class="as400-cursor" aria-hidden="true">_</span></h1>
-    <div class="subtitle prompt">Digital Experiments &amp; Tools.</div>
+<h1>CompileCurious<span class="as400-cursor">_</span></h1>
+<div class="subtitle prompt">Digital experiments & tools.</div>
 
-    <!-- DesktopDecimator -->
-    <div class="tool">
-      <h2 class="typed-title">Desktop-Decimator</h2>
-      <p class="prompt">
-        A full native‑resolution remake of the classic desktop destruction game,
-        rebuilt with real geometric cutting, physics &amp;amp; particles.
-      </p>
+<div class="tool">
+<h2 class="typed-title">Desktop-Decimator</h2>
+<p class="prompt">
+A full native‑resolution remake of the classic desktop destruction game,
+rebuilt with real geometric cutting, physics & particles.
+</p>
+<a class="button" href="./tools/DesktopDecimator.exe">Download</a>
+</div>
 
-      <a class="button" href="./tools/DesktopDecimator.exe">Download</a>
-    </div>
+<div class="tool">
+<h2 class="typed-title">HID Injection Payloads</h2>
+<p class="prompt">
+A collection of USB HID payloads for automated input emulation, testing, and rapid deployment scenarios.
+</p>
+<a class="button" href="#">Download</a>
+</div>
 
-    <!-- HID Injection Payloads -->
-    <div class="tool">
-      <h2 class="typed-title">HID Injection Payloads</h2>
-      <p class="prompt">
-        A collection of USB HID payloads for automated input emulation, testing, and rapid deployment scenarios.
-      </p>
+<div class="tool">
+<h2 class="typed-title">LogiCost</h2>
+<p class="prompt">
+LogiCost converts volume assumptions into activity-based cost models across warehousing & handling
+</p>
+<a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/v0.1/LogiCost.exe">Download</a>
+</div>
 
-      <a class="button" href="#">Download</a>
-    </div>
+<hr>
 
-    <!-- LogiCost -->
-    <div class="tool">
-      <h2 class="typed-title">LogiCost</h2>
-      <p class="prompt">
-        LogiCost converts volume assumptions into activity-based cost models across warehousing &amp;amp; handling
-      </p>
+<p class="footer prompt">
+This site hosts binaries only. All source code remains private.<br>
+No tracking. No analytics. No telemetry. Just tools.
+</p>
 
-      <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/v0.1/LogiCost.exe">Download</a>
-    </div>
+<div class="counter">
+<img src="https://hits.sh/compilecurious.github.io.svg?style=flat-square&label=site+hits"
+style="filter: hue-rotate(90deg) saturate(1.6) brightness(1.15); opacity:0.9;">
+</div>
 
-    <hr>
-
-    <p class="footer prompt">
-      This site hosts binaries only. All source code remains private.<br>
-      No tracking. No analytics. No telemetry. Just tools.
-    </p>
-
-    <div class="counter">
-      <img
-        src="https://hits.sh/shadysam.github.io.svg?style=flat-square&amp;amp;label=site+hits"
-        alt="counter"
-        style="filter: hue-rotate(90deg) saturate(1.6) brightness(1.15); opacity: 0.9;"
-      >
-    </div>
-
-  </div>
-
-<script>
-(function () {
-  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // ===========================
-  // Typed titles (sequential)
-  // ===========================
-  const titles = Array.from(document.querySelectorAll(".typed-title"));
-  const originalTexts = titles.map(el => el.textContent);
-
-  function typeInto(el, text, speed, done) {
-    el.textContent = "";
-    el.classList.add("typing");
-    let i = 0;
-
-    function tick() {
-      el.textContent += text.charAt(i);
-      i++;
-      if (i < text.length) {
-        setTimeout(tick, speed);
-      } else {
-        el.classList.remove("typing");
-        done && done();
-      }
-    }
-    tick();
-  }
-
-  function typeAllSequentially() {
-    let idx = 0;
-    const speed = 35; // per-character
-    const gap = 160;  // pause between titles
-
-    function next() {
-      if (idx >= titles.length) return;
-      typeInto(titles[idx], originalTexts[idx], speed, () => {
-        idx++;
-        setTimeout(next, gap);
-      });
-    }
-    next();
-  }
-
-  if (!reduceMotion) {
-    window.addEventListener("DOMContentLoaded", () => {
-      typeAllSequentially();
-    });
-  } else {
-    titles.forEach(el => el.classList.remove("typing"));
-  }
-
-  // ===========================
-  // Less annoying ASCII-scramble glitch
-  // - ONE description at a time
-  // - VERY BRIEF (450ms)
-  // - Every 35–80 seconds (random)
-  // ===========================
-  if (reduceMotion) return;
-
-  const descEls = Array.from(document.querySelectorAll(".tool p.prompt"));
-  const originals = new Map();
-  descEls.forEach(el => originals.set(el, el.textContent));
-
-  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{};:,.<>/?\\|~";
-  const randInt = (min, max) => Math.floor(min + Math.random() * (max - min + 1));
-  const pick = (s) => s[randInt(0, s.length - 1)];
-
-  function scrambleText(text) {
-    return [...text].map(ch => {
-      if (ch === " " || ch === "\n" || ch === "\t") return ch;
-      if ("-&".includes(ch)) return ch;
-      return pick(GLYPHS);
-    }).join("");
-  }
-
-  function glitchOneDescription(durationMs = 450) {
-    if (!descEls.length) return;
-
-    const el = descEls[randInt(0, descEls.length - 1)];
-    const original = originals.get(el) ?? el.textContent;
-
-    el.textContent = scrambleText(original);
-    el.classList.add("desc-glitch");
-
-    setTimeout(() => {
-      el.textContent = original;
-      el.classList.remove("desc-glitch");
-    }, durationMs);
-  }
-
-  function scheduleGlitch() {
-    const delay = 35000 + Math.random() * 45000; // 35–80s
-    setTimeout(() => {
-      glitchOneDescription(450);
-      scheduleGlitch();
-    }, delay);
-  }
-
-  window.addEventListener("load", scheduleGlitch);
-})();
-</script>
-
+</div>
 </body>
 </html>

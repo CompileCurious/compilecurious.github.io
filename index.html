@@ -4,157 +4,111 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>CompileCurious</title>
+<title>ShadySam</title>
 
-<!-- ✅ Open Graph (fixes preview) -->
-<meta property="og:title" content="CompileCurious">
-<meta property="og:description" content="Digital experiments & tools.">
+<!-- ✅ Link Preview -->
+<meta property="og:title" content="ShadySam">
+<meta property="og:description" content="Digital Experiments & Tools">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://compilecurious.github.io/">
+<meta name="description" content="Digital Experiments & Tools">
 
-<meta name="description" content="Digital experiments & tools.">
+<!-- ✅ Green CRT favicon (inline SVG = no file needed) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' ry='4' fill='none' stroke='lime' stroke-width='3'/>
+<rect x='10' y='12' width='44' height='2' fill='lime' opacity='0.2'/>
+<rect x='10' y='16' width='44' height='2' fill='lime' opacity='0.2'/>
+<rect x='10' y='20' width='44' height='2' fill='lime' opacity='0.2'/>
+<rect x='20' y='46' width='24' height='6' fill='lime'/>
+</svg>">
 
 <style>
-  :root{
-    --bg: #020a05;
-    --phosphor: #66ff8a;
-    --phosphor2:#1bff5a;
-  }
+:root{
+  --bg:#020a05;
+  --phosphor:#66ff8a;
+  --phosphor2:#1bff5a;
+}
 
-  html, body { height: 100%; }
+body{
+  margin:0;
+  padding:42px 18px;
+  background:radial-gradient(1200px 900px at 50% 10%,#052013 0%,var(--bg)55%,#010603 100%);
+  color:var(--phosphor);
+  font-family:"VT323",monospace;
+}
 
-  body {
-    margin: 0;
-    padding: 42px 18px;
-    background: radial-gradient(1200px 900px at 50% 10%, #052013 0%, var(--bg) 55%, #010603 100%);
-    color: var(--phosphor);
-    font-family: "VT323", monospace;
-  }
+.crt{
+  max-width:920px;
+  margin:0 auto;
+  padding:28px;
+  border:1px solid rgba(90,255,150,0.3);
+  box-shadow:0 0 40px rgba(0,255,120,0.1);
+}
 
-  .crt {
-    position: relative;
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 28px;
-    border: 1px solid rgba(90,255,150,0.3);
-    box-shadow: 0 0 40px rgba(0,255,120,0.1);
-  }
+.crt::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,.25)3px);
+  opacity:.6;
+  pointer-events:none;
+}
 
-  .crt::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 2px,
-      rgba(0,0,0,0.25) 3px
-    );
-    pointer-events: none;
-    opacity: 0.6;
-  }
+h1,h2{
+  margin:0;
+  text-transform:uppercase;
+  color:var(--phosphor2);
+  text-shadow:0 0 10px #33ff66;
+}
 
-  h1, h2 {
-    margin: 0;
-    text-transform: uppercase;
-    color: var(--phosphor2);
-    text-shadow: 0 0 10px #33ff66;
-  }
+h1{font-size:3rem;}
 
-  h1 { font-size: 3rem; }
+.subtitle{margin-bottom:20px;color:rgba(140,255,180,.8);}
 
-  .subtitle {
-    margin-bottom: 20px;
-    color: rgba(140,255,180,0.8);
-  }
+.tool{
+  border:1px solid rgba(90,255,150,.25);
+  padding:18px;
+  margin-top:20px;
+}
 
-  .tool {
-    border: 1px solid rgba(90,255,150,0.25);
-    padding: 18px;
-    margin-top: 20px;
-  }
+.button{
+  display:inline-block;
+  padding:10px 14px;
+  border:1px solid #33ff66;
+  color:#33ff66;
+  text-decoration:none;
+  margin-top:10px;
+}
 
-  .tool p { font-size: 1.25rem; }
+.button:hover{background:rgba(0,255,120,.1);}
 
-  .button {
-    display:inline-block;
-    padding:10px 14px;
-    border:1px solid #33ff66;
-    color:#33ff66;
-    text-decoration:none;
-    margin-top:10px;
-  }
+.prompt::before{
+  content:"> ";
+  color:#66ff8a;
+}
 
-  .button:hover {
-    background: rgba(0,255,120,0.1);
-  }
-
-  hr {
-    margin: 25px 0;
-    border: none;
-    border-top: 1px dashed rgba(90,255,150,0.3);
-  }
-
-  .footer {
-    color: rgba(140,255,185,0.6);
-  }
-
-  .counter { margin-top: 20px; }
-
-  .prompt::before {
-    content: "> ";
-    color: #66ff8a;
-  }
-
-  /* Cursor */
-  .as400-cursor{
-    display: inline-block;
-    margin-left: 6px;
-    width: 0.7ch;
-    color: var(--phosphor2);
-    text-shadow:
-      0 0 12px rgba(51,255,102,0.55),
-      0 0 5px rgba(51,255,102,0.35);
-    animation: as400Blink 1.05s steps(1, end) infinite;
-  }
-
-  @keyframes as400Blink {
-    0%, 45% { opacity: 1; }
-    46%, 60% { opacity: 0; }
-    61%, 100% { opacity: 1; }
-  }
-
-  /* Typed caret */
-  .typed-title.typing::after {
-    content: "█";
-    margin-left: 6px;
-    animation: caretBlink 0.85s steps(1) infinite;
-  }
-
-  @keyframes caretBlink {
-    0%,49%{opacity:1}
-    50%,100%{opacity:0}
-  }
-
-  .desc-glitch {
-    text-shadow: 0 0 18px rgba(80,255,160,0.65);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .typed-title.typing::after { animation: none; }
-    .as400-cursor { animation: none; }
-  }
+/* Cursor */
+.as400-cursor{
+  margin-left:6px;
+  animation:blink 1.05s steps(1) infinite;
+}
+@keyframes blink{
+  0%,45%{opacity:1}
+  46%,60%{opacity:0}
+  61%,100%{opacity:1}
+}
 </style>
 </head>
 
 <body>
+
 <div class="crt">
 
-<h1>CompileCurious<span class="as400-cursor">_</span></h1>
-<div class="subtitle prompt">Digital experiments & tools.</div>
+<h1>ShadySam<span class="as400-cursor">_</span></h1>
+<div class="subtitle prompt">Digital Experiments & Tools.</div>
 
 <div class="tool">
-<h2 class="typed-title">Desktop-Decimator</h2>
+<h2>Desktop-Decimator</h2>
 <p class="prompt">
 A full native‑resolution remake of the classic desktop destruction game,
 rebuilt with real geometric cutting, physics & particles.
@@ -163,7 +117,7 @@ rebuilt with real geometric cutting, physics & particles.
 </div>
 
 <div class="tool">
-<h2 class="typed-title">HID Injection Payloads</h2>
+<h2>HID Injection Payloads</h2>
 <p class="prompt">
 A collection of USB HID payloads for automated input emulation, testing, and rapid deployment scenarios.
 </p>
@@ -171,7 +125,7 @@ A collection of USB HID payloads for automated input emulation, testing, and rap
 </div>
 
 <div class="tool">
-<h2 class="typed-title">LogiCost</h2>
+<h2>LogiCost</h2>
 <p class="prompt">
 LogiCost converts volume assumptions into activity-based cost models across warehousing & handling
 </p>
@@ -187,9 +141,10 @@ No tracking. No analytics. No telemetry. Just tools.
 
 <div class="counter">
 <img src="https://hits.sh/compilecurious.github.io.svg?style=flat-square&label=site+hits"
-style="filter: hue-rotate(90deg) saturate(1.6) brightness(1.15); opacity:0.9;">
+style="filter:hue-rotate(90deg) saturate(1.6) brightness(1.15); opacity:0.9;">
 </div>
 
 </div>
+
 </body>
 </html>

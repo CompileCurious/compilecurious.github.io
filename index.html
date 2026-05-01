@@ -98,6 +98,26 @@
   }
 
   /* ===========================
+     AS/400-style blinking underscore cursor (FIXED)
+     =========================== */
+  .as400-cursor{
+    display: inline-block;
+    margin-left: 6px;
+    width: 0.7ch;              /* prevents layout wobble */
+    color: var(--phosphor2);
+    text-shadow:
+      0 0 12px rgba(51,255,102,0.55),
+      0 0 5px rgba(51,255,102,0.35);
+    animation: as400Blink 1.05s steps(1, end) infinite;
+  }
+
+  @keyframes as400Blink {
+    0%, 45%   { opacity: 1; }
+    46%, 60%  { opacity: 0; }
+    61%, 100% { opacity: 1; }
+  }
+
+  /* ===========================
      Typed-title caret
      =========================== */
   .typed-title.typing::after {
@@ -114,7 +134,7 @@
   }
 
   /* ===========================
-     NEW (less annoying): brief description "ASCII scramble"
+     Less annoying: brief description "ASCII scramble"
      =========================== */
   .desc-glitch {
     text-shadow:
@@ -125,6 +145,7 @@
   /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .typed-title.typing::after { animation: none; }
+    .as400-cursor { animation: none; opacity: 1; }
   }
 </style>
 </head>
@@ -251,10 +272,8 @@
   const pick = (s) => s[randInt(0, s.length - 1)];
 
   function scrambleText(text) {
-    // Keep whitespace stable so layout doesn't jump
     return [...text].map(ch => {
       if (ch === " " || ch === "\n" || ch === "\t") return ch;
-      // Keep a few readability anchors
       if ("-&".includes(ch)) return ch;
       return pick(GLYPHS);
     }).join("");
@@ -278,13 +297,12 @@
   function scheduleGlitch() {
     const delay = 35000 + Math.random() * 45000; // 35–80s
     setTimeout(() => {
-      glitchOneDescription(450); // brief = less annoying
+      glitchOneDescription(450);
       scheduleGlitch();
     }, delay);
   }
 
   window.addEventListener("load", scheduleGlitch);
-
 })();
 </script>
 

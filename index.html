@@ -320,7 +320,7 @@
   }
 
   function scheduleCorruption() {
-    const delay = 60000 + Math.random() * 60000; // 60–120s
+    const delay = 5000 + Math.random() * 5000; // 60–120s
     setTimeout(() => {
       corruptRandomCharacter(500);
       scheduleCorruption();

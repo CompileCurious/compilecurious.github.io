@@ -12,42 +12,25 @@
 <style>
   :root{
     --bg: #020a05;
-    --bg2:#001a0b;
     --phosphor: #66ff8a;
     --phosphor2:#1bff5a;
-    --dim: #23c957;
-    --line: rgba(90, 255, 150, 0.08);
-    --border: rgba(90, 255, 150, 0.35);
-    --panel: rgba(0, 20, 8, 0.75);
-    --panel2: rgba(0, 10, 5, 0.6);
-    --shadow: rgba(40, 255, 140, 0.25);
   }
-
-  html, body { height: 100%; }
 
   body {
     margin: 0;
     padding: 42px 18px;
     background: radial-gradient(1200px 900px at 50% 10%, #052013 0%, var(--bg) 55%, #010603 100%);
     color: var(--phosphor);
-    font-family: "VT323", Consolas, monospace;
-    letter-spacing: 0.2px;
-    line-height: 1.35;
+    font-family: "VT323", monospace;
   }
 
   .crt {
     position: relative;
     max-width: 920px;
     margin: 0 auto;
-    padding: 28px 22px 30px;
-    background: linear-gradient(180deg, rgba(0,18,8,0.65), rgba(0,10,5,0.55));
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow:
-      0 0 0 1px rgba(40,255,140,0.06) inset,
-      0 0 42px rgba(40,255,140,0.12),
-      0 0 120px rgba(40,255,140,0.07);
-    overflow: hidden;
+    padding: 28px;
+    border: 1px solid rgba(90,255,150,0.3);
+    box-shadow: 0 0 40px rgba(0,255,120,0.1);
   }
 
   .crt::before {
@@ -58,9 +41,10 @@
       to bottom,
       transparent 0px,
       transparent 2px,
-      rgba(0,0,0,0.22) 3px
+      rgba(0,0,0,0.25) 3px
     );
-    opacity: 0.55;
+    pointer-events: none;
+    opacity: 0.6;
   }
 
   h1, h2 {
@@ -70,75 +54,72 @@
     text-shadow: 0 0 10px #33ff66;
   }
 
-  h1 { font-size: 3.2rem; }
+  h1 { font-size: 3rem; }
 
   .subtitle {
-    color: rgba(102,255,138,0.75);
-    font-size: 1.35rem;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+    color: rgba(140,255,180,0.8);
   }
 
   .tool {
     border: 1px solid rgba(90,255,150,0.25);
-    border-radius: 10px;
     padding: 18px;
-    margin-top: 18px;
+    margin-top: 20px;
   }
 
   .tool p {
     font-size: 1.25rem;
-    color: rgba(140,255,185,0.88);
-  }
-
-  a {
-    color: var(--phosphor2);
-    text-decoration: none;
   }
 
   .button {
-    display: inline-block;
-    padding: 10px 14px;
-    border: 1px solid rgba(90,255,150,0.55);
-    background: linear-gradient(180deg, rgba(0,35,12,0.75), rgba(0,18,7,0.85));
-    color: var(--phosphor2);
-    font-size: 1.35rem;
-    margin-top: 10px;
+    display:inline-block;
+    padding:10px 14px;
+    border:1px solid #33ff66;
+    color:#33ff66;
+    text-decoration:none;
+    margin-top:10px;
+  }
+
+  .button:hover {
+    background: rgba(0,255,120,0.1);
   }
 
   hr {
+    margin: 25px 0;
     border: none;
-    border-top: 1px dashed rgba(90,255,150,0.25);
-    margin: 26px 0;
+    border-top: 1px dashed rgba(90,255,150,0.3);
   }
 
   .footer {
-    font-size: 1.1rem;
-    color: rgba(140,255,185,0.65);
+    color: rgba(140,255,185,0.6);
   }
 
   .counter {
     margin-top: 20px;
-    text-align: center;
   }
 
   .prompt::before {
     content: "> ";
-    color: rgba(102,255,138,0.75);
+    color: #66ff8a;
   }
-
 </style>
 </head>
 
 <body>
   <div class="crt">
+
     <h1>ShadySam</h1>
     <div class="subtitle prompt">Digital Experiments & Tools.</div>
 
     <div class="tool">
       <h2>DesktopDecimator</h2>
-      <p class="prompt">A full native‑resolution remake of the classic desktop destruction game, rebuilt with real geometric cutting, physics & particles.</p>
+      <p class="prompt">
+        A full native‑resolution remake of the classic desktop destruction game,
+        rebuilt with real geometric cutting, physics & particles.
+      </p>
 
-      <a class="button" href="tools/DesktopDecimator.exe">Download Latest</a>
+      <!-- ✅ FIXED DOWNLOAD LINK -->
+      <a class="button" href="./tools/DesktopDecimator.exe">Download Latest</a>
     </div>
 
     <hr>
@@ -148,7 +129,7 @@
       No tracking. No analytics. No telemetry. Just tools.
     </p>
 
-    <!-- ✅ Counter moved here, no ">" -->
+    <!-- ✅ LEFT-ALIGNED COUNTER -->
     <div class="counter">
       <img
         src="https://hits.sh/shadysam.github.io.svg?style=flat-square&label=site+hits"

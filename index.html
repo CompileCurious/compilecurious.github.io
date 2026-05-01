@@ -12,9 +12,7 @@
     --phosphor2:#1bff5a;
   }
 
-  html, body {
-    height: 100%;
-  }
+  html, body { height: 100%; }
 
   body {
     margin: 0;
@@ -67,9 +65,7 @@
     margin-top: 20px;
   }
 
-  .tool p {
-    font-size: 1.25rem;
-  }
+  .tool p { font-size: 1.25rem; }
 
   .button {
     display:inline-block;
@@ -94,9 +90,7 @@
     color: rgba(140,255,185,0.6);
   }
 
-  .counter {
-    margin-top: 20px;
-  }
+  .counter { margin-top: 20px; }
 
   .prompt::before {
     content: "> ";
@@ -120,13 +114,12 @@
   }
 
   /* ===========================
-     NEW: Text corruption "glitch pop"
-     (applied briefly to the parent element)
+     NEW (less annoying): brief description "ASCII scramble"
      =========================== */
-  .glitch-pop {
+  .desc-glitch {
     text-shadow:
-      0 0 14px rgba(80,255,160,0.55),
-      0 0 4px rgba(80,255,160,0.35);
+      0 0 18px rgba(80,255,160,0.65),
+      0 0 6px rgba(80,255,160,0.35);
   }
 
   /* Respect reduced motion */
@@ -140,7 +133,7 @@
   <div class="crt">
 
     <h1>ShadySam</h1>
-    <div class="subtitle prompt">Digital Experiments & Tools.</div>
+    <div class="subtitle prompt">Digital Experiments &amp; Tools.</div>
 
     <!-- DesktopDecimator -->
     <div class="tool">
@@ -242,94 +235,55 @@
   }
 
   // ===========================
-  // NEW: Random character corruption glitch
-  // - excludes headings (h1/h2)
-  // - excludes links/buttons/summary
-  // - runs every 60–120 seconds
+  // Less annoying ASCII-scramble glitch
+  // - ONE description at a time
+  // - VERY BRIEF (450ms)
+  // - Every 35–80 seconds (random)
   // ===========================
   if (reduceMotion) return;
 
-  const GLYPHS = "!@#$%^&*()_+-=[]{};:,.<>/?\\|~ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const descEls = Array.from(document.querySelectorAll(".tool p.prompt"));
+  const originals = new Map();
+  descEls.forEach(el => originals.set(el, el.textContent));
+
+  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{};:,.<>/?\\|~";
   const randInt = (min, max) => Math.floor(min + Math.random() * (max - min + 1));
   const pick = (s) => s[randInt(0, s.length - 1)];
 
-  function getTextNodes(root) {
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
-        if (!node.nodeValue) return NodeFilter.FILTER_REJECT;
-        const text = node.nodeValue;
-        if (!text.trim()) return NodeFilter.FILTER_REJECT;
-
-        const parent = node.parentElement;
-        if (!parent) return NodeFilter.FILTER_REJECT;
-
-        // Never touch headings (includes typed tool titles)
-        if (parent.closest("h1, h2")) return NodeFilter.FILTER_REJECT;
-
-        // Avoid corrupting interactive UI text
-        if (parent.closest("a, button, summary")) return NodeFilter.FILTER_REJECT;
-
-        // Avoid hidden elements
-        const cs = window.getComputedStyle(parent);
-        if (cs.display === "none" || cs.visibility === "hidden") return NodeFilter.FILTER_REJECT;
-
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    });
-
-    const nodes = [];
-    let n;
-    while ((n = walker.nextNode())) nodes.push(n);
-    return nodes;
+  function scrambleText(text) {
+    // Keep whitespace stable so layout doesn't jump
+    return [...text].map(ch => {
+      if (ch === " " || ch === "\n" || ch === "\t") return ch;
+      // Keep a few readability anchors
+      if ("-&".includes(ch)) return ch;
+      return pick(GLYPHS);
+    }).join("");
   }
 
-  function corruptRandomCharacter(durationMs = 500) {
-    const nodes = getTextNodes(document.body);
-    if (!nodes.length) return;
+  function glitchOneDescription(durationMs = 450) {
+    if (!descEls.length) return;
 
-    const node = nodes[randInt(0, nodes.length - 1)];
-    const text = node.nodeValue;
-    if (!text || text.length < 1) return;
+    const el = descEls[randInt(0, descEls.length - 1)];
+    const original = originals.get(el) ?? el.textContent;
 
-    // Pick a non-whitespace character index
-    let idx = randInt(0, text.length - 1);
-    let guard = 0;
-    while (guard++ < 25 && /\s/.test(text[idx])) {
-      idx = randInt(0, text.length - 1);
-    }
-    if (/\s/.test(text[idx])) return;
+    el.textContent = scrambleText(original);
+    el.classList.add("desc-glitch");
 
-    const originalChar = text[idx];
-    const glitchChar = pick(GLYPHS);
-
-    // Apply glitch
-    node.nodeValue = text.slice(0, idx) + glitchChar + text.slice(idx + 1);
-
-    const parent = node.parentElement;
-    if (parent) parent.classList.add("glitch-pop");
-
-    // Revert
     setTimeout(() => {
-      // Best effort restore
-      if (node && node.nodeValue && node.nodeValue.length >= idx + 1) {
-        const current = node.nodeValue;
-        node.nodeValue = current.slice(0, idx) + originalChar + current.slice(idx + 1);
-      }
-      if (parent) parent.classList.remove("glitch-pop");
+      el.textContent = original;
+      el.classList.remove("desc-glitch");
     }, durationMs);
   }
 
-  function scheduleCorruption() {
-    const delay = 5000 + Math.random() * 5000; // 60–120s
+  function scheduleGlitch() {
+    const delay = 35000 + Math.random() * 45000; // 35–80s
     setTimeout(() => {
-      corruptRandomCharacter(1500);
-      scheduleCorruption();
+      glitchOneDescription(450); // brief = less annoying
+      scheduleGlitch();
     }, delay);
   }
 
-  window.addEventListener("load", () => {
-    scheduleCorruption();
-  });
+  window.addEventListener("load", scheduleGlitch);
 
 })();
 </script>

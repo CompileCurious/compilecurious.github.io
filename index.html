@@ -5,176 +5,336 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ShadySam — DesktopDecimator</title>
 
+<!-- Optional: pixel-ish font. Remove if you want zero external requests. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg: #020a05;
-  --phosphor: #66ff8a;
-  --phosphor2:#1bff5a;
-}
+  :root{
+    --bg: #020a05;
+    --bg2:#001a0b;
+    --phosphor: #66ff8a;
+    --phosphor2:#1bff5a;
+    --dim: #23c957;
+    --line: rgba(90, 255, 150, 0.08);
+    --border: rgba(90, 255, 150, 0.35);
+    --panel: rgba(0, 20, 8, 0.75);
+    --panel2: rgba(0, 10, 5, 0.6);
+    --shadow: rgba(40, 255, 140, 0.25);
+  }
 
-body {
-  margin: 0;
-  padding: 42px 18px;
-  background: #020a05;
-  color: var(--phosphor);
-  font-family: "VT323", monospace;
-}
+  /* Page base */
+  html, body {
+    height: 100%;
+  }
 
-/* Hide page until glitch finishes */
-#site {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-#site.revealed {
-  opacity: 1;
-}
+  body {
+    margin: 0;
+    padding: 42px 18px;
+    background: radial-gradient(1200px 900px at 50% 10%, #052013 0%, var(--bg) 55%, #010603 100%);
+    color: var(--phosphor);
+    font-family: "VT323", Consolas, "Lucida Console", Monaco, monospace;
+    letter-spacing: 0.2px;
+    line-height: 1.35;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: none; /* helps “pixel” feel */
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* CRT container */
-.crt {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 28px;
-  border: 1px solid rgba(90,255,150,0.3);
-  box-shadow: 0 0 25px rgba(0,255,100,0.15);
-}
+  /* CRT glass container */
+  .crt {
+    position: relative;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 28px 22px 30px;
+    background: linear-gradient(180deg, rgba(0,18,8,0.65), rgba(0,10,5,0.55));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow:
+      0 0 0 1px rgba(40,255,140,0.06) inset,
+      0 0 42px rgba(40,255,140,0.12),
+      0 0 120px rgba(40,255,140,0.07);
+    overflow: hidden;
+  }
 
-/* Scanlines */
-.crt::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 2px,
-    rgba(0,0,0,0.25) 3px
-  );
-  pointer-events: none;
-}
+  /* Scanlines overlay */
+  .crt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.0) 0px,
+        rgba(0, 0, 0, 0.0) 2px,
+        rgba(0, 0, 0, 0.22) 3px
+      );
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+  }
 
-/* Headings */
-h1,h2 {
-  color: var(--phosphor2);
-  text-shadow: 0 0 10px #33ff66;
-}
+  /* Phosphor glow + vignette + subtle curvature */
+  .crt::after {
+    content: "";
+    position: absolute;
+    inset: -10%;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center,
+        rgba(50,255,150,0.10) 0%,
+        rgba(10,60,30,0.10) 40%,
+        rgba(0,0,0,0.55) 78%,
+        rgba(0,0,0,0.85) 100%),
+      radial-gradient(900px 600px at 50% 10%,
+        rgba(80,255,160,0.08) 0%,
+        rgba(0,0,0,0) 60%);
+    filter: blur(0.2px);
+    transform: perspective(900px) rotateX(0.6deg);
+    opacity: 0.95;
+  }
 
-.tool {
-  border: 1px solid rgba(90,255,150,0.2);
-  padding: 18px;
-  margin-top: 20px;
-}
+  /* Flicker animation (subtle) */
+  @keyframes flicker {
+    0%   { opacity: 0.98; }
+    5%   { opacity: 0.92; }
+    10%  { opacity: 0.98; }
+    20%  { opacity: 0.95; }
+    30%  { opacity: 0.99; }
+    40%  { opacity: 0.94; }
+    50%  { opacity: 0.98; }
+    60%  { opacity: 0.93; }
+    70%  { opacity: 0.99; }
+    80%  { opacity: 0.96; }
+    90%  { opacity: 0.98; }
+    100% { opacity: 0.97; }
+  }
+  .flicker {
+    animation: flicker 3.2s infinite;
+  }
 
-.button {
-  display:inline-block;
-  padding:10px;
-  border:1px solid #33ff66;
-  color:#33ff66;
-  text-decoration:none;
-  margin-top:10px;
-}
+  /* Headings */
+  h1, h2 {
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--phosphor2);
+    text-shadow:
+      0 0 6px rgba(80,255,160,0.55),
+      0 0 18px rgba(80,255,160,0.25);
+  }
 
-/* ================= CRT GLITCH ================= */
+  h1 {
+    font-size: 3.2rem;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
 
-#crt-boot {
-  position: fixed;
-  inset: 0;
-  background: black;
-  z-index: 9999;
-  pointer-events: none;
-}
+  .subtitle {
+    color: rgba(102,255,138,0.75);
+    font-size: 1.35rem;
+    margin-bottom: 22px;
+    text-shadow: 0 0 10px rgba(80,255,160,0.12);
+  }
 
-/* Noise */
-.crt-noise {
-  position:absolute;
-  inset:0;
-  opacity:0.15;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: noise 0.2s infinite;
-}
+  hr {
+    border: none;
+    border-top: 1px dashed rgba(90,255,150,0.25);
+    margin: 26px 0;
+  }
 
-@keyframes noise {
-  0% {transform:translate(0,0)}
-  50% {transform:translate(-2px,2px)}
-}
+  /* Tool panel */
+  .tool {
+    position: relative;
+    background: linear-gradient(180deg, rgba(0,18,8,0.55), rgba(0,8,4,0.35));
+    border: 1px solid rgba(90,255,150,0.25);
+    border-radius: 10px;
+    padding: 18px 18px 16px;
+    margin: 18px 0 0;
+    box-shadow:
+      0 0 0 1px rgba(40,255,140,0.05) inset,
+      0 0 22px rgba(40,255,140,0.10);
+  }
 
-/* Scanlines overlay */
-.crt-lines {
-  position:absolute;
-  inset:0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent 2px,
-    rgba(0,0,0,0.3) 3px
-  );
-}
+  .tool h2 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
 
-/* Glitch flash */
-.crt-flash {
-  position:absolute;
-  inset:0;
-  background: radial-gradient(circle, rgba(0,255,120,0.2), black);
-  opacity:0;
-  animation: flash 0.4s ease;
-}
+  .tool p {
+    margin: 0 0 14px;
+    font-size: 1.25rem;
+    color: rgba(140,255,185,0.88);
+    text-shadow: 0 0 10px rgba(80,255,160,0.10);
+  }
 
-@keyframes flash {
-  0%{opacity:1}
-  100%{opacity:0}
-}
+  /* Links */
+  a {
+    color: var(--phosphor2);
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(80,255,160,0.18);
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Terminal button */
+  .button {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(90,255,150,0.55);
+    background: linear-gradient(180deg, rgba(0,35,12,0.75), rgba(0,18,7,0.85));
+    color: var(--phosphor2);
+    font-weight: 700;
+    font-size: 1.35rem;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.4) inset,
+      0 0 14px rgba(50,255,150,0.18);
+    transition: transform 0.08s ease, box-shadow 0.12s ease;
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.4) inset,
+      0 0 22px rgba(50,255,150,0.30);
+  }
+
+  .button:active {
+    transform: translateY(0px);
+    filter: brightness(0.95);
+  }
+
+  /* Checksum box & system requirements */
+  .box {
+    margin-top: 14px;
+    padding: 12px 12px;
+    background: rgba(0, 10, 5, 0.55);
+    border: 1px solid rgba(90,255,150,0.22);
+    border-radius: 8px;
+    font-size: 1.15rem;
+    color: rgba(140,255,185,0.92);
+    text-shadow: 0 0 8px rgba(80,255,160,0.08);
+  }
+
+  .box strong {
+    color: var(--phosphor2);
+  }
+
+  .label {
+    font-size: 1.2rem;
+    color: var(--phosphor2);
+    margin-bottom: 6px;
+    text-shadow: 0 0 10px rgba(80,255,160,0.20);
+  }
+
+  ul {
+    margin: 8px 0 0;
+    padding-left: 22px;
+  }
+
+  /* Details/summary */
+  details {
+    margin-top: 14px;
+    padding-top: 4px;
+  }
+
+  summary {
+    cursor: pointer;
+    color: var(--phosphor2);
+    font-size: 1.25rem;
+    text-shadow: 0 0 10px rgba(80,255,160,0.16);
+    user-select: none;
+  }
+
+  /* Counter */
+  .counter {
+    margin-top: 14px;
+    font-size: 1.1rem;
+    color: rgba(140,255,185,0.80);
+  }
+
+  .footer {
+    font-size: 1.1rem;
+    color: rgba(140,255,185,0.65);
+  }
+
+  /* Optional: “terminal prompt” flair */
+  .prompt::before {
+    content: "> ";
+    color: rgba(102,255,138,0.75);
+  }
+
+  /* Mobile tweak */
+  @media (max-width: 560px) {
+    body { padding: 22px 12px; }
+    h1 { font-size: 2.6rem; }
+    .subtitle { font-size: 1.15rem; }
+    .tool h2 { font-size: 1.9rem; }
+    .tool p, .button, .box { font-size: 1.1rem; }
+  }
 </style>
 </head>
 
 <body>
-
-<div id="site">
-  <div class="crt">
+  <div class="crt flicker">
     <h1>ShadySam</h1>
-    <div>Digital experiments & tools.</div>
+    <div class="subtitle prompt">Digital experiments &amp; tools.</div>
 
     <div class="tool">
       <h2>DesktopDecimator</h2>
-      <p>A full native‑resolution remake of the classic desktop destruction game.</p>
+      <p class="prompt">A full native‑resolution remake of the classic desktop destruction game, rebuilt with real geometric cutting, physics &amp; particles.</p>
 
+      <!-- Download Latest -->
       <a class="button" href="tools/DesktopDecimator.exe">Download Latest</a>
 
-      <div>
-        MD5: REPLACE_MD5<br>
-        SHA256: REPLACE_SHA256
+      <!-- Checksums -->
+      <div class="box">
+        <strong>Checksums (Latest):</strong><br>
+        MD5: <span style="color: rgba(200,255,220,0.92);">REPLACE_MD5</span><br>
+        SHA‑256: <span style="color: rgba(200,255,220,0.92);">REPLACE_SHA256</span>
+      </div>
+
+      <!-- Older Versions -->
+      <details>
+        <summary>Older Versions</summary>
+        <ul style="list-style: square;">
+          <li><a href="tools/DesktopDecimator0.3.exe">DesktopDecimator0.3.exe</a></li>
+          <li><a href="tools/DesktopDecimator0.2.exe">DesktopDecimator0.2.exe</a></li>
+          <li><a href="tools/DesktopDecimator0.1.exe">DesktopDecimator0.1.exe</a></li>
+        </ul>
+      </details>
+
+      <!-- System Requirements -->
+      <div class="box" style="margin-top: 16px;">
+        <div class="label">System Requirements</div>
+        <ul>
+          <li>Windows 10 or 11 (64‑bit)</li>
+          <li>.NET 6 Runtime or newer</li>
+          <li>DirectX 11 compatible GPU</li>
+          <li>Mouse recommended</li>
+        </ul>
+      </div>
+
+      <!-- Retro-style download counter -->
+      <div class="counter prompt">
+        Downloads:<br>
+        <img
+          src="https://hits.sh/shadysam.github.io.svg?style=flat-square&label=site+hits"
+          alt="counter"
+          style="filter: hue-rotate(90deg) saturate(1.6) brightness(1.15); opacity: 0.9;"
+        >
       </div>
     </div>
+
+    <hr>
+
+    <p class="footer prompt">
+      This site hosts binaries only. All source code remains private.<br>
+      No tracking. No analytics. No telemetry. Just tools.
+    </p>
   </div>
-</div>
-
-<!-- CRT Boot -->
-<div id="crt-boot">
-  <div class="crt-noise"></div>
-  <div class="crt-lines"></div>
-  <div class="crt-flash"></div>
-</div>
-
-<script>
-window.addEventListener("load", () => {
-  const boot = document.getElementById("crt-boot");
-  const site = document.getElementById("site");
-
-  setTimeout(() => {
-    site.classList.add("revealed");
-  }, 400);
-
-  setTimeout(() => {
-    boot.style.opacity = "0";
-  }, 600);
-
-  setTimeout(() => {
-    boot.remove();
-  }, 900);
-});
-</script>
-
 </body>
 </html>

@@ -1,273 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>ShadySam</title>
+  <title>ShadySam</title>
 
-<!-- Link Preview -->
-<meta property="og:title" content="ShadySam">
-<meta property="og:description" content="Digital Experiments &amp; Tools">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://compilecurious.github.io/">
-<meta name="description" content="Digital Experiments &amp; Tools">
+  <!-- Link Preview -->
+  <meta property="og:title" content="ShadySam">
+  <meta property="og:description" content="Digital Experiments &amp; Tools">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://compilecurious.github.io/">
+  <meta name="description" content="Digital Experiments &amp; Tools">
 
-<!-- Green CRT favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='10' width='44' height='30' rx='2' ry='2' fill='none' stroke='lime' stroke-width='3'/%3E%3Crect x='14' y='16' width='36' height='2' fill='lime' opacity='0.35'/%3E%3Crect x='14' y='21' width='36' height='2' fill='lime' opacity='0.25'/%3E%3Crect x='24' y='44' width='16' height='4' fill='lime'/%3E%3C/svg%3E">
+  <!-- Green CRT favicon -->
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='10' width='44' height='30' rx='2' ry='2' fill='none' stroke='lime' stroke-width='3'/%3E%3Crect x='14' y='16' width='36' height='2' fill='lime' opacity='0.35'/%3E%3Crect x='14' y='21' width='36' height='2' fill='lime' opacity='0.25'/%3E%3Crect x='24' y='44' width='16' height='4' fill='lime'/%3E%3C/svg%3E"
+  >
 
-<style>
-:root{
-  --bg:#020a05;
-  --phosphor:#66ff8a;
-  --phosphor2:#1bff5a;
-  --border:rgba(90,255,150,0.28);
-}
+  <style>
+    :root{
+      --bg:#020a05;
+      --phosphor:#66ff8a;
+      --phosphor2:#1bff5a;
+      --border:rgba(90,255,150,0.28);
+    }
 
-*{box-sizing:border-box;}
+    *{
+      box-sizing:border-box;
+    }
 
-body{
-  margin:0;
-  padding:42px 18px;
-  background:
-    radial-gradient(1200px 900px at 50% 10%, #052013 0%, var(--bg) 55%, #010603 100%);
-  color:var(--phosphor);
-  font-family:"VT323", monospace;
-  min-height:100vh;
-}
+    body{
+      margin:0;
+      padding:42px 18px;
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 900px at 50% 10%, #052013 0%, var(--bg) 55%, #010603 100%);
+      color:var(--phosphor);
+      font-family:"VT323", monospace;
+    }
 
-.crt{
-  max-width:920px;
-  margin:0 auto;
-  padding:28px;
-  border:1px solid var(--border);
-  box-shadow:
-    0 0 40px rgba(0,255,120,0.10),
-    inset 0 0 30px rgba(0,255,120,0.03);
-  position:relative;
-  overflow:hidden;
-}
+    .crt{
+      max-width:920px;
+      margin:0 auto;
+      padding:28px;
+      border:1px solid var(--border);
+      box-shadow:
+        0 0 40px rgba(0,255,120,0.10),
+        inset 0 0 30px rgba(0,255,120,0.03);
+      position:relative;
+      overflow:hidden;
+    }
 
-.crt::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 2px,
-      rgba(0,0,0,.22) 3px
-    );
-  opacity:.55;
-  pointer-events:none;
-}
+    .crt::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 2px,
+          rgba(0,0,0,.22) 3px
+        );
+      opacity:.55;
+      pointer-events:none;
+    }
 
-.crt::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at center, transparent 55%, rgba(0,0,0,0.18) 100%);
-  pointer-events:none;
-}
+    .crt::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, transparent 55%, rgba(0,0,0,0.18) 100%);
+      pointer-events:none;
+    }
 
-h1,h2{
-  margin:0;
-  text-transform:uppercase;
-  color:var(--phosphor2);
-  text-shadow:0 0 10px #33ff66;
-}
+    h1,h2{
+      margin:0;
+      text-transform:uppercase;
+      color:var(--phosphor2);
+      text-shadow:0 0 10px #33ff66;
+      position:relative;
+      z-index:1;
+    }
 
-h1{
-  font-size:3rem;
-  line-height:1;
-  display:flex;
-  align-items:center;
-}
+    h1{
+      font-size:3rem;
+      line-height:1;
+      display:flex;
+      align-items:center;
+    }
 
-h2{
-  font-size:2rem;
-  margin-bottom:8px;
-}
+    h2{
+      font-size:2rem;
+      margin-bottom:8px;
+    }
 
-.subtitle{
-  margin:10px 0 20px 0;
-  color:rgba(140,255,180,.82);
-  font-size:1.35rem;
-}
+    .subtitle{
+      margin:10px 0 20px 0;
+      color:rgba(140,255,180,.82);
+      font-size:1.35rem;
+      position:relative;
+      z-index:1;
+    }
 
-.tool{
-  border:1px solid rgba(90,255,150,.25);
-  padding:18px;
-  margin-top:20px;
-  background:rgba(0,0,0,0.08);
-  position:relative;
-}
+    .tool{
+      border:1px solid rgba(90,255,150,.25);
+      padding:18px;
+      margin-top:20px;
+      background:rgba(0,0,0,0.08);
+      position:relative;
+      z-index:1;
+    }
 
-.tool p{
-  margin:0;
-  font-size:1.35rem;
-  line-height:1.25;
-}
+    .tool p{
+      margin:0;
+      font-size:1.35rem;
+      line-height:1.25;
+    }
 
-.button{
-  display:inline-block;
-  padding:10px 14px;
-  border:1px solid #33ff66;
-  color:#33ff66;
-  text-decoration:none;
-  margin-top:12px;
-  font-size:1.2rem;
-  transition:background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-}
+    .button{
+      display:inline-block;
+      padding:10px 14px;
+      border:1px solid #33ff66;
+      color:#33ff66;
+      text-decoration:none;
+      margin-top:12px;
+      font-size:1.2rem;
+      transition:background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+      position:relative;
+      z-index:1;
+    }
 
-.button:hover{
-  background:rgba(0,255,120,.10);
-  box-shadow:0 0 10px rgba(51,255,102,.18);
-}
+    .button:hover{
+      background:rgba(0,255,120,.10);
+      box-shadow:0 0 10px rgba(51,255,102,.18);
+    }
 
-.prompt::before{
-  content:"> ";
-  color:#66ff8a;
-}
+    .prompt::before{
+      content:"> ";
+      color:#66ff8a;
+    }
 
-/* AS/400-style cursor */
-.as400-cursor{
-  display:inline-block;
-  margin-left:6px;
-  animation:blink 1.05s steps(1) infinite;
-}
+    .as400-cursor{
+      display:inline-block;
+      margin-left:6px;
+      animation:blink 1.05s steps(1) infinite;
+    }
 
-@keyframes blink{
-  0%,45%{opacity:1;}
-  46%,60%{opacity:0;}
-  61%,100%{opacity:1;}
-}
+    @keyframes blink{
+      0%,45%{opacity:1;}
+      46%,60%{opacity:0;}
+      61%,100%{opacity:1;}
+    }
 
-/* Full-description glitch styling */
-.glitch-text{
-  transition:opacity 0.08s linear, text-shadow 0.08s linear, transform 0.08s linear;
-}
+    .glitch-text{
+      transition:opacity 0.08s linear, text-shadow 0.08s linear, transform 0.08s linear;
+    }
 
-.glitching{
-  opacity:0.95;
-  text-shadow:
-    0 0 8px #66ff8a,
-    0 0 14px #1bff5a,
-    1px 0 0 rgba(255,255,255,0.15),
-    -1px 0 0 rgba(0,255,100,0.18);
-  transform:translateX(1px);
-}
+    .glitching{
+      opacity:0.95;
+      text-shadow:
+        0 0 8px #66ff8a,
+        0 0 14px #1bff5a,
+        1px 0 0 rgba(255,255,255,0.15),
+        -1px 0 0 rgba(0,255,100,0.18);
+      transform:translateX(1px);
+    }
 
-.footer{
-  margin-top:24px;
-  font-size:1.25rem;
-  color:rgba(140,255,180,.82);
-}
+    .footer{
+      margin-top:24px;
+      font-size:1.25rem;
+      color:rgba(140,255,180,.82);
+      position:relative;
+      z-index:1;
+    }
 
-.counter{
-  margin-top:18px;
-  text-align:left;
-}
+    .counter{
+      margin-top:18px;
+      text-align:left;
+      position:relative;
+      z-index:1;
+    }
 
-.counter img{
-  display:block;
-  filter:hue-rotate(90deg) saturate(1.6) brightness(1.15);
-  opacity:0.9;
-}
-</style>
+    .counter img{
+      display:block;
+      filter:hue-rotate(90deg) saturate(1.6) brightness(1.15);
+      opacity:0.9;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="crt">
+  <div class="crt">
 
-  <h1>ShadySam<span class="as400-cursor">_</span></h1>
-  <div class="subtitle prompt">Digital Experiments &amp; Tools.</div>
+    <h1>ShadySam<span class="as400-cursor">_</span></h1>
+    <div class="subtitle prompt">Digital Experiments &amp; Tools.</div>
 
-  <div class="tool">
-    <h2>LogiSpec</h2>
-    <p class="prompt glitch-text">
-      Spec logistics warehouse requirements based on customer RFQ. Export PDF report or .LSPEC file for LogiCost.
+    <div class="tool">
+      <h2>LogiSpec</h2>
+      <p class="prompt glitch-text">
+        Spec logistics warehouse requirements based on customer RFQ. Export PDF report or .LSPEC file for LogiCost.
+      </p>
+      <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/LogiSpec/LogiSpec.exe">Download</a>
+    </div>
+
+    <div class="tool">
+      <h2>LogiCost</h2>
+      <p class="prompt glitch-text">
+        LogiCost converts volume assumptions into activity-based cost models across warehousing &amp; handling.
+      </p>
+      <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/v0.1/LogiCost.exe">Download</a>
+    </div>
+
+    <div class="tool">
+      <h2>TileSpeak</h2>
+      <p class="prompt glitch-text">
+        Free TTS tool for Android — because everyone deserves a voice, not just those that can afford it.
+      </p>
+      <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/TileSpeak/TileSpeak.apk">Download</a>
+    </div>
+
+    <p class="footer prompt">
+      This site hosts binaries only. All source code remains private.<br>
+      No tracking. No analytics. No telemetry. Just tools.
     </p>
-    <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/LogiSpec/LogiSpec.exe">Download</a>
+
+    <div class="counter">
+      <img
+        src="https://hits.sh/compilecurious.github.io.svg?style=flat-square&label=site+hits"
+        alt="Site hits counter"
+      >
+    </div>
+
   </div>
 
-  <div class="tool">
-    <h2>LogiCost</h2>
-    <p class="prompt glitch-text">
-      LogiCost converts volume assumptions into activity-based cost models across warehousing &amp; handling.
-    </p>
-    <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/v0.1/LogiCost.exe">Download</a>
-  </div>
+  <script>
+    (function () {
+      const glitchTargets = Array.from(document.querySelectorAll('.glitch-text'));
+      if (!glitchTargets.length) return;
 
-  <div class="tool">
-    <h2>TileSpeak</h2>
-    <p class="prompt glitch-text">
-      Free TTS tool for Android — because everyone deserves a voice, not just those that can afford it.
-    </p>
-    <a class="button" href="https://github.com/CompileCurious/compilecurious.github.io/releases/download/TileSpeak/TileSpeak.apk">Download</a>
-  </div>
+      const originals = new Map();
+      glitchTargets.forEach(el => originals.set(el, el.textContent));
 
-  <p class="footer prompt">
-    This site hosts binaries only. All source code remains private.<br>
-    No tracking. No analytics. No telemetry. Just tools.
-  </p>
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{};:,.<>?/\\\\|";
 
-  <div class="counter">
-    <img
-      src="https://hits.sh/compilecurious.github.io.svg?style=flat-square&label=site+hits"
-      alt="Site hits counter"
-    >
-  </div>
+      function gibberishFromText(text) {
+        return text.split("").map(ch => {
+          if (ch === " " || ch === "\n") return ch;
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join("");
+      }
 
-</div>
+      function glitchOne() {
+        const target = glitchTargets[Math.floor(Math.random() * glitchTargets.length)];
+        const originalText = originals.get(target);
 
-<script>
-(function () {
-  const glitchTargets = Array.from(document.querySelectorAll('.glitch-text'));
-  if (!glitchTargets.length) return;
+        target.classList.add("glitching");
+        target.textContent = gibberishFromText(originalText);
 
-  const originals = new Map();
-  glitchTargets.forEach(el => originals.set(el, el.innerHTML));
+        setTimeout(() => {
+          target.textContent = originalText;
+          target.classList.remove("glitching");
+        }, 1000);
+      }
 
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{};:,.<>?/\\\\|";
+      function scheduleNextGlitch() {
+        const delay = 20000 + Math.random() * 15000; // 20–35 seconds
+        setTimeout(() => {
+          glitchOne();
+          scheduleNextGlitch();
+        }, delay);
+      }
 
-  function gibberishFromText(text) {
-    return text.split("").map(ch => {
-      if (ch === " ") return " ";
-      if (ch === "\n") return "\n";
-      if (ch === "&") return "&";
-      if (ch === ";") return ";";
-      return chars[Math.floor(Math.random() * chars.length)];
-    }).join("");
-  }
-
-  function glitchOne() {
-    const target = glitchTargets[Math.floor(Math.random() * glitchTargets.length)];
-    const originalHTML = originals.get(target);
-    const originalText = target.textContent;
-
-    target.classList.add("glitching");
-    target.textContent = gibberishFromText(originalText);
-
-    setTimeout(() => {
-      target.innerHTML = originalHTML;
-      target.classList.remove("glitching");
-    }, 1000);
-  }
-
-  function scheduleNextGlitch() {
-    const delay = 20000 + Math.random() * 15000; // 20–35 seconds
-    setTimeout(() => {
-      glitchOne();
       scheduleNextGlitch();
-    }, delay);
-  }
-
-  scheduleNextGlitch();
-})();
-</script>
+    })();
+  </script>
 
 </body>
 </html>
